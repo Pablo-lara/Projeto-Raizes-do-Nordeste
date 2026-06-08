@@ -1,0 +1,6 @@
+@ProjetoRaizes_HostAddress = http://localhost:5054
+
+GET {{ProjetoRaizes_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
