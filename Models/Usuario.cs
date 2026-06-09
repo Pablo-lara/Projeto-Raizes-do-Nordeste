@@ -1,14 +1,21 @@
-﻿namespace ProjetoRaizes.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProjetoRaizes.Models
 {
     public class Usuario
     {
         public int Id { get; set; }
         public string Nome { get; set; }
 
+
+        [Required]
         public string Sobrenome { get; set; }
 
+
+        [Required]
         public string Email { get; set; }
 
+        [Required]
         public string SenhaHash { get; set; }
 
         public DateTime DataCriacao { get; set; }

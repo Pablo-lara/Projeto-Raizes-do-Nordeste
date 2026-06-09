@@ -16,7 +16,6 @@ namespace ProjetoRaizes.Controllers
             _pedidoService = pedidoService;
         }
 
-        // 1. Endpoint para realizar o pedido
         [HttpPost]
         public async Task<IActionResult> CriarPedido([FromBody] CriarPedidoDTO dto)
         {
@@ -31,7 +30,6 @@ namespace ProjetoRaizes.Controllers
             }
         }
 
-        // 2. Endpoint para o cliente consultar o status atual
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterStatusPedido(int id)
         {
@@ -41,13 +39,12 @@ namespace ProjetoRaizes.Controllers
             return Ok(new
             {
                 PedidoId = pedido.Id,
-                StatusAtual = pedido.Status.ToString(), // Retorna o texto do Enum (ex: "Recebido")
+                StatusAtual = pedido.Status.ToString(),
                 ValorTotal = pedido.ValorTotal,
                 Data = pedido.DataPedido
             });
         }
 
-        // 3. Endpoint para a cozinha atualizar o status (ex: Mudar para Pronto)
         [HttpPut("{id}/status")]
         public async Task<IActionResult> AtualizarStatus(int id, [FromBody] AtualizarStatusDTO dto)
         {
@@ -55,6 +52,23 @@ namespace ProjetoRaizes.Controllers
             if (pedido == null) return NotFound(new { erro = "Pedido não encontrado." });
 
             return Ok(new { mensagem = $"Status do pedido alterado para {pedido.Status} com sucesso!" });
+        }
+
+        [HttpPost("pagamento")]
+        public async Task<IActionResult> PagarPedido([FromBody] ProcessarPagamentosDTO dto)
+        {
+            try
+            {
+                var resultado = await _pedidoService.ProcessarPagamentoSimuladoAsync(dto);
+
+                return Ok(new { mensagem = resultado });
+            }
+            catch (Exception ex)
+            {
+                {
+                    return BadRequest(new { erro = ex.Message });
+                }
+            }
         }
     }
 }

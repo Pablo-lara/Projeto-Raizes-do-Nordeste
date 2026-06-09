@@ -30,9 +30,32 @@ namespace ProjetoRaizes.Services
             return await _pedidoRepository.BuscarPorIdAsync(id);
         }
 
+        public async Task<string> ProcessarPagamentoSimuladoAsync(ProcessarPagamentosDTO dto)
+        {
+            var pedido = await _pedidoRepository.BuscarPorIdAsync(dto.PedidoId);
+
+            if(pedido == null)
+            {
+                throw new Exception("Pedido não localizado");
+            }
+
+            if(pedido.Status != StatusPedido.Recebido)
+            {
+                throw new Exception($"Não é possível pagar um pedido com o status atual: {pedido.Status}.");
+            }
+
+            decimal valorCobrado = pedido.ValorTotal;
+            string formatoPagamentoTexto = dto.FormaPagamento.ToString();
+
+            pedido.Status = StatusPedido.EmPreparacao;
+            await _pedidoRepository.AtualizarPedidoAsync(pedido);
+
+            return $"Pagamento de R$ {valorCobrado:N2} aprovado via {formatoPagamentoTexto}. O pedido está agora Em Preparação!";
+        }
+
         public async Task<Pedido> RealizarPedidoAsync(CriarPedidoDTO dto)
         {
-            var novoPedido = new Pedido { UsuarioId = dto.UsuarioId };
+            var novoPedido = new Pedido { UsuarioId = dto.UsuarioId, Canal = dto.Canal};
             decimal valorTotalGeral = 0;
 
             var cardapio = await _cardapioRepository.ObterTodosAtivosAsync();

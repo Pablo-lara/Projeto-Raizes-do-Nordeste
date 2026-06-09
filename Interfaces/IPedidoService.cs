@@ -8,5 +8,7 @@ namespace ProjetoRaizes.Interfaces
         Task<Pedido> RealizarPedidoAsync(CriarPedidoDTO dto);
         Task<Pedido?> ConsultarStatusAsync(int id);
         Task<Pedido?> AtualizarStatusAsync(int id, StatusPedido novoStatus);
+
+        Task<string> ProcessarPagamentoSimuladoAsync(ProcessarPagamentosDTO dto);
     }
 }

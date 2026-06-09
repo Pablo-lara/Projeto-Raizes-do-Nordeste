@@ -10,5 +10,6 @@ namespace ProjetoRaizes.Interfaces
         Task<Usuario> AtualizarUsuarioAsync(Usuario usuario);
 
         Task<Usuario> BuscarPorEmailAsync(string email);
+
     }
 }

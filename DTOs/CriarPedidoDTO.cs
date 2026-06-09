@@ -1,9 +1,13 @@
-﻿namespace ProjetoRaizes.DTOs
+﻿using ProjetoRaizes.Models;
+
+namespace ProjetoRaizes.DTOs
 {
     public class CriarPedidoDTO
     {
         public int UsuarioId { get; set; }
         public List<ItemCarrinhoDTO> Itens { get; set; } = new();
+
+        public CanalPedido Canal {  get; set; }
     }
 
     public class ItemCarrinhoDTO

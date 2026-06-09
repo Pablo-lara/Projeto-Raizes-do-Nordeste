@@ -13,19 +13,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 1. Configurar a conexão com o Banco de Dados (usando uma string de conexão local)
+//Configuracao do Banco de dados(Conexao local)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Registrar seu par de Repository
+//Registra o repository e o service do usuario
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
-// 3. Registrar seu par de Service
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
+//Registra o repository e o service dos itens do cardapio
 builder.Services.AddScoped<IItemCardapioRepository, ItemCardapioRepository>();
 builder.Services.AddScoped<IItemCardapioService, ItemCardapioService>();
 
+//Registra o repository e o service do pedido
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 
@@ -37,7 +37,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); // É isso aqui que cria a página HTML que você acessa
+    app.UseSwaggerUI();
 }
 
 // Configure the HTTP request pipeline.

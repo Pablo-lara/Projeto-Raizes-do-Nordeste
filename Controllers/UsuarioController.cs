@@ -8,7 +8,6 @@ namespace ProjetoRaizes.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [VerificarConsentimento]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -30,21 +29,29 @@ namespace ProjetoRaizes.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> CriarUsuario(Usuario usuario)
         {
-
+            /*
             if (!usuario.PermissaoDados)
             {
                 return BadRequest("É necessário consentir com o uso de dados para se cadastrar");
             }
+            */
 
             usuario.SenhaHash = await _usuarioService.CriptoSenhaAsync(usuario.SenhaHash);
             usuario = await _usuarioService.DefinirDataAsync(usuario);
 
             var usuarioSalvo = await _usuarioRepository.SalvarUsuarioAsync(usuario);
 
-            return Ok(usuarioSalvo);
+            return Ok(new
+            {
+                mensagem = "Cadastro realizado com sucesso",
+                id = usuario.Id,
+                nome = usuario.Nome,
+                sobrenome = usuario.Sobrenome,
+                email = usuario.Email
+            });
         }
 
 
